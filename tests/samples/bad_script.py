@@ -12,3 +12,5 @@ DAO.raw_sql("SELECT foo FROM bar where id={id}".format(id=1))
 DAO.raw_sql("SELECT foo FROM {0} where id={1}".format("aa", 1))
 
 DAO.raw_sql("SELECT foo FROM {table} where id={id}".format(table="aa", id=1))
+
+DAO.raw_sql("SELECT foo FROM {table} where id={id}".format(table=DAO.Meta.table, id=1))
