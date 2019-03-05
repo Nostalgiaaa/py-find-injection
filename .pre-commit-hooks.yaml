@@ -1,0 +1,9 @@
+---
+
+- id: py-find-injection
+  name: py-find-injection
+  description: find-illegal-SQL-splicing
+  entry: py-find-injection
+  language: python
+  language_version: python2
+  types: [python]
