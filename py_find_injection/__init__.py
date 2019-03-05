@@ -81,8 +81,8 @@ class Checker(ast.NodeVisitor):
                             for n in node.args:
                                 if not (n.value.attr == "Meta" and n.attr == "table"):
                                     break
-                                else:
-                                    return
+                            else:
+                                return
                     except AttributeError:
                         return IllegalLine('str.format called on SQL query', node, self.filename)
                     return IllegalLine('str.format called on SQL query', node, self.filename)
