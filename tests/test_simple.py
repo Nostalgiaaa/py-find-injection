@@ -14,7 +14,7 @@ class TestSimple(TestCase):
 
     def test_bad_file(self):
         errors = py_find_injection.check(os.path.join(SAMPLE_PATH, 'bad_script.py'))
-        self.assertEqual(1, len(errors))
+        self.assertEqual(3, len(errors))
         self.assertEqual(errors[0].lineno, 6)
         self.assertEqual(errors[0].reason, 'string interpolation of SQL query')
 
