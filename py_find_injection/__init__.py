@@ -71,11 +71,11 @@ class Checker(ast.NodeVisitor):
                     try:
                         if node.keywords:
                             # .format(table=xxx.Meta.Table)
-                            if node.keywords[0].value.value.attr == "Meta" and node.keywords[0].value.attr == "Table":
+                            if node.keywords[0].value.value.attr == "Meta" and node.keywords[0].value.attr == "table" and len(node.keywords) == 1:
                                 return
                         if node.args:
                             # .format(xxx.Meta.Table)
-                            if node.args[0].value.attr == "Meta" and node.args[0].attr == "Table":
+                            if node.args[0].value.attr == "Meta" and node.args[0].attr == "table" and len(node.args) == 1:
                                 return
                     except AttributeError:
                         return IllegalLine('str.format called on SQL query', node, self.filename)
