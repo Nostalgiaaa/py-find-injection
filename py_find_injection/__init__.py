@@ -68,6 +68,17 @@ class Checker(ast.NodeVisitor):
         elif isinstance(node, ast.Call):
             if isinstance(node.func, ast.Attribute):
                 if node.func.attr == 'format':
+                    try:
+                        if node.keywords:
+                            # .format(table=xxx.Meta.Table)
+                            if node.keywords[0].value.value.attr == "Meta" and node.keywords[0].value.attr == "Table":
+                                return
+                        if node.args:
+                            # .format(xxx.Meta.Table)
+                            if node.args[0].value.attr == "Meta" and node.args[0].attr == "Table":
+                                return
+                    except AttributeError:
+                        return IllegalLine('str.format called on SQL query', node, self.filename)
                     return IllegalLine('str.format called on SQL query', node, self.filename)
         elif isinstance(node, ast.Name):
             # now we need to figure out where that query is assigned. blargh.
@@ -77,7 +88,9 @@ class Checker(ast.NodeVisitor):
 
     def visit_Call(self, node):
         function_name = stringify(node.func)
-        if function_name.lower() in ('session.execute', 'cursor.execute'):
+        if function_name.lower().endswith("raw_sql") or function_name.lower().endswith("where"):
+            if not node.args:
+                return
             node.args[0].parent = node
             node_error = self.check_execute(node.args[0])
             if node_error:
