@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-
+# coding:utf-8
+import linecache
 import argparse
 import ast
 import sys
@@ -68,11 +68,15 @@ class Checker(ast.NodeVisitor):
         elif isinstance(node, ast.Call):
             if isinstance(node.func, ast.Attribute):
                 if node.func.attr == 'format':
+                    line_no = node.lineno
+                    line_str = linecache.getline(self.filename, line_no)
+                    if "# noqa" in line_str:
+                        return
                     try:
                         if node.keywords:
                             # .format(table=xxx.Meta.Table)
                             for n in node.keywords:
-                                if not (n.value.value.attr == "Meta" and n.value.attr == "table"):
+                                if not (n.value.value.attr == "Meta" and n.value.attr in "table"):
                                     break
                             else:
                                 return
