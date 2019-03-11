@@ -60,6 +60,12 @@ class Checker(ast.NodeVisitor):
         super(Checker, self).__init__(*args, **kwargs)
 
     def check_execute(self, node):
+        # noqa 跳过检查
+        line_no = node.lineno
+        line_str = linecache.getline(self.filename, line_no)
+        if "# noqa" in line_str:
+            return
+
         if isinstance(node, ast.BinOp):
             if isinstance(node.op, ast.Mod):
                 return IllegalLine('string interpolation of SQL query', node, self.filename)
@@ -68,10 +74,6 @@ class Checker(ast.NodeVisitor):
         elif isinstance(node, ast.Call):
             if isinstance(node.func, ast.Attribute):
                 if node.func.attr == 'format':
-                    line_no = node.lineno
-                    line_str = linecache.getline(self.filename, line_no)
-                    if "# noqa" in line_str:
-                        return
                     try:
                         if node.keywords:
                             # .format(table=xxx.Meta.Table)

@@ -12,5 +12,6 @@ DAO.raw_sql("SELECT * from {table} where id=%s".format(table=DAO.Meta.table), ui
 DAO.raw_sql("{table1} join {table2}".format(DAO.Meta.table, DAO.Meta.table))
 sql = "SELECT foo from {0} WHERE id=%s".format("bar")  # noqa
 DAO.raw_sql(sql)
+DAO.raw_sql("SELECT * from %s where id=%s" % ("test", 1))
 
 unused_str = "{0}".format(1)
