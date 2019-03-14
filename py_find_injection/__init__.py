@@ -78,7 +78,7 @@ class Checker(ast.NodeVisitor):
                         if node.keywords:
                             # .format(table=xxx.Meta.Table)
                             for n in node.keywords:
-                                if not (n.value.value.attr == "Meta" and n.value.attr in "table"):
+                                if not (n.value.value.attr == "Meta" and n.value.attr == "table"):
                                     break
                             else:
                                 return
