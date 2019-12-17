@@ -5,5 +5,5 @@
   description: find-illegal-SQL-splicing
   entry: py-find-injection
   language: python
-  language_version: python2
+  language_version: python3.6
   types: [python]
